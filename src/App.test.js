@@ -5,14 +5,25 @@ import App from './App';
 
 Enzyme.configure({ adapter: new EnzymeAdapeter() })
 
-it('renders without crashing', () => {
-  const wrapper = shallow(<App />);
-  const appComponent = wrapper.find("[data-test='component-app']")
-  expect(appComponent.length).toBe(1);
-});
+describe('App', () => {
+  let wrapper;
 
-it('renders an increment button', () => {
-  const wrapper = shallow(<App />);
-  const button = wrapper.find("button");
-  expect(button.length).toBe(1);
-});
+  beforeEach(() => {
+    wrapper = shallow(<App />);
+  });
+
+  it('renders without crashing', () => {
+    const appComponent = wrapper.find("[data-test='component-app']")
+    expect(appComponent.length).toBe(1);
+  });
+
+  it('renders an increment button', () => {
+    const button = wrapper.find("button");
+    expect(button.length).toBe(1);
+  });
+
+  it('renders a counter', () => {
+    const counter = wrapper.find("[data-test='counter-display']");
+    expect(counter.length).toBe(1);
+  })
+})
