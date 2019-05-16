@@ -35,4 +35,14 @@ describe('App', () => {
     const initialCounterState = wrapper.state('counter');
     expect(initialCounterState).toBe(0);
   });
+
+  it('increments the counter on button click', () => {
+    const counter = 5
+    wrapper.setState({ counter });
+    const button = wrapper.find("button");
+    button.simulate('click');
+    wrapper.update();
+    const counterDisplay = wrapper.find("[data-test='counter-display']");
+    expect(counterDisplay.text()).toContain(counter +1)
+  });
 })

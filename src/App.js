@@ -9,11 +9,21 @@ class App extends Component {
     }
   }
 
+  isClicked = () => {
+    this.setState({ counter: this.state.counter +1 })
+  }
+
   render() {
     return (
       <div data-test="component-app">
-        <h1 data-test="counter-display">The Count is Currently 0</h1>
-        <button>Click Me!</button>
+        <h1 data-test="counter-display">
+          The Count is Currently { this.state.counter }
+        </h1>
+        <button
+          onClick={ () => this.setState({ counter: this.state.counter +1 }) }
+        >
+          Click Me!
+        </button>
       </div>
     );
   }
