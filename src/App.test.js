@@ -41,6 +41,12 @@ describe('App', () => {
     expect(initialCounterState).toBe(0);
   });
 
+  it('is not in error mode when first rendered', () => {
+    const initialErrorModeState = wrapper.state('errorMode');
+    expect(initialErrorModeState).toBeDefined();
+    expect(initialErrorModeState).toBeFalsy();
+  })
+
   it('increments the counter on increment button click', () => {
     const counter = 5
     wrapper.setState({ counter });
@@ -59,5 +65,47 @@ describe('App', () => {
     wrapper.update();
     const counterDisplay = wrapper.find("[data-test='counter-display']");
     expect(counterDisplay.text()).toContain(counter -1);
+  });
+
+  it('will not decrement the counter below 0', () => {
+    wrapper.setState({ counter: 0 });
+    const button = wrapper.find("[data-test='decrement-button']");
+    button.simulate('click');
+    wrapper.update();
+    const counterDisplay = wrapper.find("[data-test='counter-display']");
+    expect(counterDisplay.text()).toContain('0');
+  });
+
+  it('enters error mode if attempting to decrement below 0', () => {
+    wrapper.setState({ counter: 0 });
+    const button = wrapper.find("[data-test='decrement-button']");
+    button.simulate('click');
+    wrapper.update();
+    const errorModeState = wrapper.state('errorMode');
+    expect(errorModeState).toBeTruthy();
+  });
+
+  it('displays an error message if in error mode', () => {
+    wrapper.setState({ errorMode: true });
+    const component = wrapper.find("[data-test='component-app']");
+    expect(component.text()).toContain("ERROR")
+  });
+
+  it('exits error mode if incremented', () => {
+    wrapper.setState({ counter: 0, errorMode: true });
+    const button = wrapper.find("[data-test='increment-button']");
+    button.simulate('click');
+    wrapper.update();
+    const errorModeState = wrapper.state('errorMode');
+    expect(errorModeState).toBeFalsy();
+  });
+
+  it('removes the error message once out of error mode', () => {
+    wrapper.setState({ errorMode: true });
+    const button = wrapper.find("[data-test='increment-button']");
+    button.simulate('click');
+    wrapper.update();
+    const component = wrapper.find("[data-test='component-app']");
+    expect(component.text()).not.toContain("ERROR")
   });
 })
