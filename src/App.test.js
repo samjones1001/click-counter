@@ -8,8 +8,12 @@ Enzyme.configure({ adapter: new EnzymeAdapeter() })
 describe('App', () => {
   let wrapper;
 
+  const setup = (props = {}, state = null) => {
+    return shallow(<App { ... props } />)
+  }
+
   beforeEach(() => {
-    wrapper = shallow(<App />);
+    wrapper = setup();
   });
 
   it('renders without crashing', () => {
@@ -25,5 +29,10 @@ describe('App', () => {
   it('renders a counter', () => {
     const counter = wrapper.find("[data-test='counter-display']");
     expect(counter.length).toBe(1);
-  })
+  });
+
+  it('the counter starts at 0', () => {
+    const initialCounterState = wrapper.state('counter');
+    expect(initialCounterState).toBe(0);
+  });
 })
