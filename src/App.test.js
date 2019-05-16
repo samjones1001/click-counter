@@ -22,8 +22,13 @@ describe('App', () => {
   });
 
   it('renders an increment button', () => {
-    const button = wrapper.find("button");
+    const button = wrapper.find("[data-test='increment-button']");
     expect(button.length).toBe(1);
+  });
+
+  it('renders a decrement button', () => {
+    const button = wrapper.find("[data-test='decrement-button']");
+    expect(button.length).toBe(1)
   });
 
   it('renders a counter', () => {
@@ -36,13 +41,23 @@ describe('App', () => {
     expect(initialCounterState).toBe(0);
   });
 
-  it('increments the counter on button click', () => {
+  it('increments the counter on increment button click', () => {
     const counter = 5
     wrapper.setState({ counter });
-    const button = wrapper.find("button");
+    const button = wrapper.find("[data-test='increment-button']");
     button.simulate('click');
     wrapper.update();
     const counterDisplay = wrapper.find("[data-test='counter-display']");
-    expect(counterDisplay.text()).toContain(counter +1)
+    expect(counterDisplay.text()).toContain(counter +1);
+  });
+
+  it('decrements the counter on decrement button click', () => {
+    const counter = 5;
+    wrapper.setState({ counter });
+    const button = wrapper.find("[data-test='decrement-button']");
+    button.simulate('click');
+    wrapper.update();
+    const counterDisplay = wrapper.find("[data-test='counter-display']");
+    expect(counterDisplay.text()).toContain(counter -1);
   });
 })
